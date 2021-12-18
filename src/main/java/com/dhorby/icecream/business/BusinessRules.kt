@@ -4,11 +4,14 @@ import java.math.BigDecimal
 
 typealias ItemCount = Int
 
-
 fun ItemCount.buy2Get1Free(): BigDecimal {
     val freeItemCount = (this / 3).toBigDecimal()
-    val totalPayableItems = this.toBigDecimal() - freeItemCount
-    return totalPayableItems
+    return toBigDecimal() - freeItemCount
 }
 
+fun ItemCount.buy2Get1HalfPrice(): BigDecimal {
+    val discount = BigDecimal(0.5)
+    val freeItemCount = (this / 3).toBigDecimal() * discount
+    return (toBigDecimal() - freeItemCount).setScale(2)
+}
 
