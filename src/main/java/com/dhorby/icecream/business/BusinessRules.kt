@@ -43,8 +43,8 @@ fun Order.calculateTotal(): PaymentBreakdown {
 }
 
 
-fun List<Order>.summariseTotal(): PaymentBreakdown {
-    val payments: List<PaymentBreakdown> = this.map { order ->
+fun List<Order?>.summariseTotal(): PaymentBreakdown {
+    val payments: List<PaymentBreakdown> = this.filterNotNull().map { order ->
         order.calculateTotal()
     }
     val totalCost = payments.sumOf { it.totalCost }

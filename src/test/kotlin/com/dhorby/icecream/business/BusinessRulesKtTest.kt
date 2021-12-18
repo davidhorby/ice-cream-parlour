@@ -2,10 +2,10 @@ package com.dhorby.icecream.business
 
 import com.dhorby.icecream.model.Flavour
 import com.dhorby.icecream.model.Order
-import com.dhorby.icecream.model.PaymentBreakdown
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.fail
 import java.math.BigDecimal
 
 
@@ -13,6 +13,7 @@ class BusinessRulesKtTest {
 
     internal class DiscountCalculations {
         private val expectedResultsForBuy2Get1Free = mapOf<Int, BigDecimal>(
+            0 to BigDecimal(0),
             1 to BigDecimal(1),
             2 to BigDecimal(2),
             3 to BigDecimal(2),
@@ -25,6 +26,7 @@ class BusinessRulesKtTest {
         )
 
         private val expectedResultsForBuy2Get1HalfPrice = mapOf<Int, BigDecimal>(
+            0 to BigDecimal(0),
             1 to BigDecimal(1),
             2 to BigDecimal(2),
             3 to BigDecimal(2.5),
@@ -48,39 +50,57 @@ class BusinessRulesKtTest {
         fun `verify buy 2 get 1 half price calculations`() {
             expectedResultsForBuy2Get1HalfPrice.forEach { (itemCount, expectedPayableItemCount) ->
                 val discountedItemCount = buy2Get1HalfPriceFunction.invoke(itemCount)
-                assertThat("For test input $itemCount", discountedItemCount.paidForItems.setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
+                assertThat(
+                    "For test input $itemCount",
+                    discountedItemCount.paidForItems.setScale(2),
+                    equalTo(expectedPayableItemCount.setScale(2))
+                )
             }
         }
     }
 
+
     internal class OrderCalculations {
         @Test
         fun `verify the discount calculations for Rocky Road flavour`() {
-            val (totalCost, totalDiscount) = Order(1, Flavour.ROCKY_ROAD).calculateTotal()
-            assertThat(totalCost, equalTo(BigDecimal(8).setScale(2)))
-            assertThat(totalDiscount, equalTo(BigDecimal(0).setScale(2)))
+            Order.of(1, Flavour.ROCKY_ROAD)?.let { order->
+                val (totalCost, totalDiscount) = order.calculateTotal()
+                assertThat(totalCost, equalTo(BigDecimal(8).setScale(2)))
+                assertThat(totalDiscount, equalTo(BigDecimal(0).setScale(2)))
+            }?: fail("Order is null")
         }
 
         @Test
         fun `verify the discount calculations for Cookies and Cream flavour`() {
-            val (totalCost, totalDiscount) = Order(3, Flavour.COOKIE_CREAM).calculateTotal()
-            assertThat(totalCost, equalTo(BigDecimal(25).setScale(2)))
-            assertThat(totalDiscount, equalTo(BigDecimal(5).setScale(2)))
+            Order.of(3, Flavour.COOKIE_CREAM)?.let { order->
+                val (totalCost, totalDiscount) = order.calculateTotal()
+                assertThat(totalCost, equalTo(BigDecimal(25).setScale(2)))
+                assertThat(totalDiscount, equalTo(BigDecimal(5).setScale(2)))
+            }?: fail("Order is null")
         }
 
         @Test
         fun `verify the discount calculations for netflix & Chill flavour`() {
-            val (totalCost, totalDiscount) = Order(2, Flavour.NETFLIX_CHILL).calculateTotal()
-            assertThat(totalCost, equalTo(BigDecimal(24).setScale(2)))
-            assertThat(totalDiscount, equalTo(BigDecimal(0).setScale(2)))
+            Order.of(2, Flavour.NETFLIX_CHILL)?.let { order ->
+                val (totalCost, totalDiscount) = order.calculateTotal()
+                assertThat(totalCost, equalTo(BigDecimal(24).setScale(2)))
+                assertThat(totalDiscount, equalTo(BigDecimal(0).setScale(2)))
+            }?: fail("Order is null")
+
+        }
+
+        @Test
+        fun `check that negative values in orders handled correctly`() {
+            val order:Order? = Order.of(-7, Flavour.COOKIE_CREAM)
+            assertThat(order, equalTo(null))
         }
 
         @Test
         fun `verify the discount calculations for an order wth several products`() {
-            val orders: List<Order> = listOf(
-                Order(1, Flavour.ROCKY_ROAD),
-                Order(3, Flavour.COOKIE_CREAM),
-                Order(2, Flavour.NETFLIX_CHILL)
+            val orders: List<Order?> = listOf(
+                Order.of(1, Flavour.ROCKY_ROAD),
+                Order.of(3, Flavour.COOKIE_CREAM),
+                Order.of(2, Flavour.NETFLIX_CHILL)
             )
             val (totalCost, totalDiscount) = orders.summariseTotal()
             assertThat(totalCost, equalTo(BigDecimal(57).setScale(2)))
