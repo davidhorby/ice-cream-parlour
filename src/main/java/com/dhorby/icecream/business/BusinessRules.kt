@@ -1,13 +1,16 @@
 package com.dhorby.icecream.business
 
+import com.dhorby.icecream.model.DiscountBreakdown
 import java.math.BigDecimal
 
-typealias DiscountFunction = (Int) -> BigDecimal
+
+typealias DiscountFunction = (Int) -> DiscountBreakdown
 
 
-fun discountItems(itemCount:Int, itemsNeededForDiscount:Int, discount:BigDecimal): BigDecimal {
+fun discountItems(itemCount:Int, itemsNeededForDiscount:Int, discount:BigDecimal): DiscountBreakdown {
     val freeItemCount = (itemCount / (itemsNeededForDiscount + 1)).toBigDecimal() * discount
-    return itemCount.toBigDecimal() - freeItemCount
+    val itemsToPayFor = itemCount.toBigDecimal() - freeItemCount
+    return DiscountBreakdown(itemsToPayFor, freeItemCount)
 }
 
 val buy2Get1FreeFunction:DiscountFunction  = { itemCount ->

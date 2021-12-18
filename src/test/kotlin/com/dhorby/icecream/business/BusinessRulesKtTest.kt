@@ -36,7 +36,7 @@ class BusinessRulesKtTest {
     fun `verify buy 2 get 1 free calculations`() {
         expectedResultsForBuy2Get1Free.forEach { (itemCount, expectedPayableItemCount) ->
             val discountedItemCount = buy2Get1FreeFunction.invoke(itemCount)
-            assertThat(discountedItemCount.setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
+            assertThat(discountedItemCount.paidForItems.setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
         }
     }
 
@@ -44,7 +44,7 @@ class BusinessRulesKtTest {
     fun `verify buy 2 get 1 half price calculations`() {
         expectedResultsForBuy2Get1HalfPrice.forEach { (itemCount, expectedPayableItemCount) ->
             val discountedItemCount = buy2Get1HalfPriceFunction.invoke(itemCount)
-            assertThat("For test input $itemCount", discountedItemCount.setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
+            assertThat("For test input $itemCount", discountedItemCount.paidForItems.setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
         }
     }
 
