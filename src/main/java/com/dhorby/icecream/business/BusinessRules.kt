@@ -10,16 +10,17 @@ fun discountItems(itemCount:Int, itemsNeededForDiscount:Int, discount:BigDecimal
     return itemCount.toBigDecimal() - freeItemCount
 }
 
-fun buy2Get1Free(itemCount: Int): BigDecimal {
-    return discountItems(
+val buy2Get1FreeFunction:(itemCount: Int) -> BigDecimal  = { itemCount ->
+    discountItems(
         itemCount = itemCount,
         itemsNeededForDiscount = 2,
         discount = BigDecimal(1)
     )
 }
 
-fun buy2Get1HalfPrice(itemCount: Int): BigDecimal {
-    return discountItems(
+
+val buy2Get1HalfPriceFunction:(itemCount: Int) -> BigDecimal = { itemCount ->
+    discountItems(
         itemCount = itemCount,
         itemsNeededForDiscount = 2,
         discount = BigDecimal(0.5)
