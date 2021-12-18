@@ -42,3 +42,12 @@ fun Order.calculateTotal(): PaymentBreakdown {
     return PaymentBreakdown(totalPaid.setScale(2), totalDiscount.setScale(2))
 }
 
+
+fun List<Order>.summariseTotal(): PaymentBreakdown {
+    val payments: List<PaymentBreakdown> = this.map { order ->
+        order.calculateTotal()
+    }
+    val totalCost = payments.sumOf { it.totalCost }
+    val totalDiscount = payments.sumOf { it.totalDiscount }
+    return PaymentBreakdown(totalCost, totalDiscount)
+}
