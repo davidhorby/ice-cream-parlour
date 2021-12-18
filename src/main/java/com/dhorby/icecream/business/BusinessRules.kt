@@ -1,6 +1,8 @@
 package com.dhorby.icecream.business
 
 import com.dhorby.icecream.model.DiscountBreakdown
+import com.dhorby.icecream.model.Order
+import com.dhorby.icecream.model.PaymentBreakdown
 import java.math.BigDecimal
 
 
@@ -28,5 +30,15 @@ val buy2Get1HalfPriceFunction:DiscountFunction = { itemCount ->
         itemsNeededForDiscount = 2,
         discount = BigDecimal(0.5)
     )
+}
+
+fun Order.calculateTotal(): PaymentBreakdown {
+    val paymentBreakdown: DiscountBreakdown = flavour.discountFunction?.invoke(numberOfItems) ?: DiscountBreakdown(
+        numberOfItems.toBigDecimal(),
+        BigDecimal(0)
+    )
+    val totalPaid = paymentBreakdown.paidForItems * flavour.price.toBigDecimal()
+    val totalDiscount = paymentBreakdown.freeItems * flavour.price.toBigDecimal()
+    return PaymentBreakdown(totalPaid.setScale(2), totalDiscount.setScale(2))
 }
 
