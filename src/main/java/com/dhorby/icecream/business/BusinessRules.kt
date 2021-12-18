@@ -2,7 +2,7 @@ package com.dhorby.icecream.business
 
 import java.math.BigDecimal
 
-typealias ItemCount = Int
+typealias DiscountFunction = (Int) -> BigDecimal
 
 
 fun discountItems(itemCount:Int, itemsNeededForDiscount:Int, discount:BigDecimal): BigDecimal {
@@ -10,7 +10,7 @@ fun discountItems(itemCount:Int, itemsNeededForDiscount:Int, discount:BigDecimal
     return itemCount.toBigDecimal() - freeItemCount
 }
 
-val buy2Get1FreeFunction:(itemCount: Int) -> BigDecimal  = { itemCount ->
+val buy2Get1FreeFunction:DiscountFunction  = { itemCount ->
     discountItems(
         itemCount = itemCount,
         itemsNeededForDiscount = 2,
@@ -19,7 +19,7 @@ val buy2Get1FreeFunction:(itemCount: Int) -> BigDecimal  = { itemCount ->
 }
 
 
-val buy2Get1HalfPriceFunction:(itemCount: Int) -> BigDecimal = { itemCount ->
+val buy2Get1HalfPriceFunction:DiscountFunction = { itemCount ->
     discountItems(
         itemCount = itemCount,
         itemsNeededForDiscount = 2,
