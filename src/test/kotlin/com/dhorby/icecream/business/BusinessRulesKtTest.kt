@@ -35,14 +35,14 @@ class BusinessRulesKtTest {
     @Test
     fun `verify buy 2 get 1 free calculations`() {
         expectedResultsForBuy2Get1Free.forEach { (itemCount, expectedPayableItemCount) ->
-            assertThat(itemCount.buy2Get1Free().setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
+            assertThat(buy2Get1Free(itemCount).setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
         }
     }
 
     @Test
     fun `verify buy 2 get 1 half price calculations`() {
         expectedResultsForBuy2Get1HalfPrice.forEach { (itemCount, expectedPayableItemCount) ->
-            assertThat("For test input $itemCount", itemCount.buy2Get1HalfPrice().setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
+            assertThat("For test input $itemCount", buy2Get1HalfPrice(itemCount).setScale(2), equalTo(expectedPayableItemCount.setScale(2)))
         }
     }
 
