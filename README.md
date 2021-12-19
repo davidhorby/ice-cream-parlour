@@ -2,9 +2,7 @@
 App for pricing ice creams of different flavours with types of different discounts
 
 ## Design
-The concept of functional decomposition was used to isolate business rules. 
-
-This allows for unit testing of these functions in isolation
+The concept of functional decomposition was used to isolate business rules allowing for unit testing of these functions
 
 ##Assumptions
 
@@ -15,13 +13,16 @@ This allows for unit testing of these functions in isolation
 ## Libraries
 In addition to the standard Kotlin libraries, the following were also user:
 
- - JUnit 5 : for new features such a apramaterised tests
+ - JUnit 5 : for new features 
  - Hamcrest for Kotlin : for improved test assertions and messages
 
-## Testing
+## Test
 ./gradlew clean test
 
-## Building
+## Build
 ./gradlew clean build
+
+## Run
+./gradlew run
 
 
