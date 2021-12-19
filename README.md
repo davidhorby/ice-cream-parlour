@@ -1,5 +1,5 @@
 # ice-cream-parlour
-App for pricing ice creams of different flavours with types of different discounts
+App for pricing ice creams of different flavours with types of different discounts. 
 
 ## Design
 The concept of functional decomposition was used to isolate business rules allowing for unit testing of these functions
