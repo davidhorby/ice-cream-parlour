@@ -1,18 +1,19 @@
 package com.dhorby.icecream.business
 
+import com.dhorby.icecream.exception.InvalidQuantityException
 import com.dhorby.icecream.model.Flavour
 import com.dhorby.icecream.model.Order
 import com.natpryce.hamkrest.assertion.assertThat
 import com.natpryce.hamkrest.equalTo
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.fail
 import java.math.BigDecimal
 
 
 class BusinessRulesKtTest {
 
     internal class DiscountCalculations {
-        private val expectedResultsForBuy2Get1Free = mapOf<Int, BigDecimal>(
+        private val expectedResultsForBuy2Get1Free = mapOf(
             0 to BigDecimal(0),
             1 to BigDecimal(1),
             2 to BigDecimal(2),
@@ -25,7 +26,7 @@ class BusinessRulesKtTest {
             9 to BigDecimal(6)
         )
 
-        private val expectedResultsForBuy2Get1HalfPrice = mapOf<Int, BigDecimal>(
+        private val expectedResultsForBuy2Get1HalfPrice = mapOf(
             0 to BigDecimal(0),
             1 to BigDecimal(1),
             2 to BigDecimal(2),
@@ -63,41 +64,43 @@ class BusinessRulesKtTest {
     internal class OrderCalculations {
         @Test
         fun `verify the discount calculations for Rocky Road flavour`() {
-            Order.of(1, Flavour.ROCKY_ROAD)?.let { order->
+            Order.of(1, Flavour.ROCKY_ROAD).let { order->
                 val (totalCost, totalDiscount) = order.calculateTotal()
                 assertThat(totalCost, equalTo(BigDecimal(8).setScale(2)))
                 assertThat(totalDiscount, equalTo(BigDecimal(0).setScale(2)))
-            }?: fail("Order is null")
+            }
         }
 
         @Test
         fun `verify the discount calculations for Cookies and Cream flavour`() {
-            Order.of(3, Flavour.COOKIE_CREAM)?.let { order->
+            Order.of(3, Flavour.COOKIE_CREAM).let { order->
                 val (totalCost, totalDiscount) = order.calculateTotal()
                 assertThat(totalCost, equalTo(BigDecimal(25).setScale(2)))
                 assertThat(totalDiscount, equalTo(BigDecimal(5).setScale(2)))
-            }?: fail("Order is null")
+            }
         }
 
         @Test
         fun `verify the discount calculations for netflix & Chill flavour`() {
-            Order.of(2, Flavour.NETFLIX_CHILL)?.let { order ->
+            Order.of(2, Flavour.NETFLIX_CHILL).let { order ->
                 val (totalCost, totalDiscount) = order.calculateTotal()
                 assertThat(totalCost, equalTo(BigDecimal(24).setScale(2)))
                 assertThat(totalDiscount, equalTo(BigDecimal(0).setScale(2)))
-            }?: fail("Order is null")
+            }
 
         }
 
         @Test
         fun `check that negative values in orders handled correctly`() {
-            val order: Order? = Order.of(-7, Flavour.COOKIE_CREAM)
-            assertThat(order, equalTo(null))
+            val exception: InvalidQuantityException = Assertions.assertThrows(InvalidQuantityException::class.java) {
+                Order.of(-7, Flavour.COOKIE_CREAM)
+            }
+            Assertions.assertEquals("Invalid quantity for order -7", exception.message)
         }
 
         @Test
         fun `verify the discount calculations for an order wth several products`() {
-            val orders: List<Order?> = listOf(
+            val orders: List<Order> = listOf(
                 Order.of(1, Flavour.ROCKY_ROAD),
                 Order.of(3, Flavour.COOKIE_CREAM),
                 Order.of(2, Flavour.NETFLIX_CHILL)
