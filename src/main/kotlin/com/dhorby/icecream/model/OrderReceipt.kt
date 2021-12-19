@@ -1,13 +1,20 @@
 package com.dhorby.icecream.model
 
-import com.dhorby.icecream.business.calculateTotal
+import com.dhorby.icecream.business.BusinessRules.calculateTotal
+import com.dhorby.icecream.business.BusinessRules.summariseTotal
 
-class OrderReceipt(val orderList:List<Order>) {
+
+class OrderReceipt(private val orderList:List<Order>) {
 
     fun printReceipt() {
-        println("Item Quantity Unit Price Total")
+        println("Item\tQuantity\tUnit\tPrice\tTotal")
         orderList.forEach {  order ->
-            println("${order.flavour} ${order.numberOfItems} ${order.flavour.price} ${order.calculateTotal().totalCost}")
+            println("${order.flavour}\t\t${order.numberOfItems}\t${order.flavour.price}\t${order.calculateTotal().totalCost}")
         }
+        val (totalCost, totalDiscount) = orderList.summariseTotal()
+        val totalOrder = totalCost + totalDiscount
+        println("Total Order $totalOrder")
+        println("Total Promos -$totalDiscount")
+        println("Total To Pay $totalCost")
     }
 }
