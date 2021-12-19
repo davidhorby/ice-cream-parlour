@@ -11,7 +11,7 @@ The concept of functional decomposition was used to isolate business rules allow
 
 
 ## Libraries
-In addition to the standard Kotlin libraries, the following were also user:
+In addition to the standard Kotlin libraries, the following were also used:
 
  - JUnit 5 : for new features 
  - Hamcrest for Kotlin : for improved test assertions and messages
