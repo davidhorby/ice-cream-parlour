@@ -15,7 +15,7 @@ fun discountItems(itemCount:Int, itemsNeededForDiscount:Int, discount:BigDecimal
     return DiscountBreakdown(itemsToPayFor, freeItemCount)
 }
 
-val buy2Get1FreeFunction:DiscountFunction  = { itemCount ->
+val buy2Get1FreeFunction: DiscountFunction = { itemCount ->
     discountItems(
         itemCount = itemCount,
         itemsNeededForDiscount = 2,
@@ -24,7 +24,7 @@ val buy2Get1FreeFunction:DiscountFunction  = { itemCount ->
 }
 
 
-val buy2Get1HalfPriceFunction:DiscountFunction = { itemCount ->
+val buy2Get1HalfPriceFunction: DiscountFunction = { itemCount ->
     discountItems(
         itemCount = itemCount,
         itemsNeededForDiscount = 2,

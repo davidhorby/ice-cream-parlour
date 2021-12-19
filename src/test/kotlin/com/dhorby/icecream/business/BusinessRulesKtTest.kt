@@ -91,7 +91,7 @@ class BusinessRulesKtTest {
 
         @Test
         fun `check that negative values in orders handled correctly`() {
-            val order:Order? = Order.of(-7, Flavour.COOKIE_CREAM)
+            val order: Order? = Order.of(-7, Flavour.COOKIE_CREAM)
             assertThat(order, equalTo(null))
         }
 

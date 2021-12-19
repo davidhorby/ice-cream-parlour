@@ -6,7 +6,7 @@ import com.dhorby.icecream.business.buy2Get1HalfPriceFunction
 
 typealias ZDR = Int
 
-enum class Flavour(val price:ZDR) {
+enum class Flavour(val price: ZDR) {
     ROCKY_ROAD(8) {
         override val discountFunction: DiscountFunction = buy2Get1FreeFunction
     },
@@ -17,7 +17,7 @@ enum class Flavour(val price:ZDR) {
         override val discountFunction: DiscountFunction? = null
     };
 
-    abstract val discountFunction:DiscountFunction?
+    abstract val discountFunction: DiscountFunction?
 }
 
 
